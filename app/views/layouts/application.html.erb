@@ -13,19 +13,22 @@
     <%= hotwire_livereload_tags if Rails.env.development? %>
   </head>
 
-  <body class="dark:bg-black dark:text-white p-8 md:py-20">
-    <div class="md:flex items-start gap-4">
+  <body class="dark:bg-black dark:text-white">
+    <% if user_signed_in? %>
+      <div class="absolute top-0 right-0 px-4 py-2 bg-gold-400 text-black">
+        <%= button_to "Sign out", session_path, method: :delete %>
+      </div>
+    <% end %>
+    <div class="md:flex items-start gap-4 p-8 md:py-20">
       <a href="/" class="text-gold-500 text-6xl font-semibold hover:text-gold-400 w-14 text-right">
         <%= random_symbol %>
       </a>
       <div>
-        <header class="prose dark:prose-invert font-serif mb-10">
+        <header class="prose dark:prose-invert font-serif mb-10 max-w-none">
           <h1 class="text-6xl font-light tracking-tight mb-3">Josh Pigford</h1>
 
           <p class="text-xl">
-            
-          </p>
-        </header>
+            <a href="/">Home</a> / <a href="/">Articles</a> / <a href="/">Projects</a> / <a href="/">Investments</a> / <a href="/">Podcasts</a> / <a href="/">Reading</a> / <a href="/">Toys</a> / <a href="/">Keyboards</a>
         <div>
         <%= yield %>
         </div>
