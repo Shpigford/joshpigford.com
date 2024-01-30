@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="dark">
+  <head>
+    <title>Josh Pigford</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <%= hotwire_livereload_tags if Rails.env.development? %>
+  </head>
+
+  <body class="dark:bg-black dark:text-white p-8 md:py-20">
+    <div class="md:flex items-start gap-4">
+      <a href="/" class="text-gold-500 text-6xl font-semibold hover:text-gold-400 w-14 text-right">
+        <%= random_symbol %>
+      </a>
+      <div>
+        <header class="prose dark:prose-invert font-serif mb-10">
+          <h1 class="text-6xl font-light tracking-tight mb-3">Josh Pigford</h1>
+
+          <p class="text-xl">
+            
+          </p>
+        </header>
+        <div>
+        <%= yield %>
+        </div>
+        <footer class="prose dark:prose-invert font-serif my-12 text-sm text-gray-400">
+          <p>
+            This thing is <a href="https://github.com/Shpigford/joshpigford">open source</a>, for better or worse.
+          </p>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

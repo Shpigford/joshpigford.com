@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.prose a,
+.thick-link {
+  text-decoration: none;
+  background-image: linear-gradient(90deg, #ffd100 0%, #ffd100 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 0.1em;
+  background-position: 0 88%;
+  transition: background-size 0.2s ease-in-out;
+}
+
+.prose a:hover {
+  background-size: 100% 0.2em;
+}
+
+@font-face {
+  font-family: "Gambarino-Regular";
+  src: url("Gambarino-Regular.eot");
+  src: url("Gambarino-Regular.eot?#iefix") format("embedded-opentype"),
+    url("Gambarino-Regular.woff2") format("woff2"),
+    url("Gambarino-Regular.woff") format("woff"),
+    url("Gambarino-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
