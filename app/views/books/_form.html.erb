@@ -1,0 +1,26 @@
+<%= form_with model: @book do |form| %>
+  <% if form.object.errors.any? %>
+    <% form.object.errors.full_messages.each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :title, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :title, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :link, class: "block text-sm font-bold mb-2" %>
+    <%= form.url_field :link, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :category, class: "block text-sm font-bold mb-2" %>
+    <%= form.select :category, ['Fiction', 'Nonfiction'], {}, {class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0"} %>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= form.submit form.object.new_record? ? "Add Book" : "Update Book", class: "bg-gold-500 hover:bg-gold-600 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+  </div>
+<% end %>
