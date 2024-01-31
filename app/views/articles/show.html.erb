@@ -1,9 +1,9 @@
 <div>
   <nav aria-label="breadcrumb">
-    <%= link_to 'Articles', articles_path %>
+    <%= link_to 'Articles', articles_path %> <span class="text-gold-400">⦂⦚</span>
   </nav>
-  <h1 class="font-serif text-4xl mt-2 mb-0"><%= @article.title %></h1>
-  <span class="text-gray-500 text-sm">
+  <h1 class="mt-2 mb-0 font-serif text-4xl"><%= @article.title %></h1>
+  <span class="text-sm text-gray-500">
     <%= @article.publish_at.strftime("%B %d, %Y") %>
   </span>
   <span class="flex space-x-2">

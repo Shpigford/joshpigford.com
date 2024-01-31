@@ -2,8 +2,8 @@
   <nav aria-label="breadcrumb">
     <%= link_to 'Projects', projects_path %> <span class="text-gold-400">⦂⦚</span>
   </nav>
-  <h1 class="font-serif text-4xl mt-2 mb-0 flex items-center gap-x-3"><%= @project.name %> <span class="text-gray-400">⦚</span> <span class="text-gray-200 text-lg"><%= @project.year %></span></h1>
-  <p class="text-lg mt-1"><%= @project.description %></p>
+  <h1 class="flex items-center mt-2 mb-0 font-serif text-4xl gap-x-3"><%= @project.name %> <span class="text-gray-400">⦚</span> <span class="text-lg text-gray-200"><%= @project.year %></span></h1>
+  <p class="mt-1 text-lg"><%= @project.description %></p>
 
   <span class="flex space-x-2">
     <%= link_to 'Edit', edit_project_path(@project), class: 'text-blue-500 no-thick-link' %>
@@ -14,13 +14,13 @@
 
 <% if @project.notes.present? %>
   <div>
-    <h2 class="font-serif text-2xl mt-8 mb-0">A bit more background</h2>
-    <p class="text-lg mt-1"><%= @project.notes %></p>
+    <h2 class="mt-8 mb-0 font-serif text-2xl">A bit more background</h2>
+    <p class="mt-1 text-lg"><%= @project.notes %></p>
   </div>
 <% end %>
 
-<h2 class="font-serif text-2xl mt-8 mb-0">What happened?</h2>
-<p class="text-lg mt-1"><%= @project.outcome %></p>
+<h2 class="mt-8 mb-0 font-serif text-2xl">What happened?</h2>
+<p class="mt-1 text-lg"><%= @project.outcome %></p>
 
 <% if @project.link.present? %>
   <p class="mt-8"><%= link_to "Check it out →", @project.link, target: "_blank", rel: "noopener noreferrer", class: "text-2xl" %></p>

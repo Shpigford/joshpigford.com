@@ -1,8 +1,32 @@
 <!DOCTYPE html>
 <html class="dark">
   <head>
-    <title>Josh Pigford</title>
+    <title><%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <meta name="title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
+    <meta name="description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Maker. Dabbler. Founder and CEO of Maybe." %>">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
+    <meta property="og:description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Maker. Dabbler. Founder and CEO of Maybe." %>">
+    <meta property="og:image" content="<%= image_url(content_for?(:meta_image) ? yield(:meta_image) : "meta.png") %>">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
+    <meta property="twitter:description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Maker. Dabbler. Founder and CEO of Maybe." %>">
+    <meta property="twitter:image" content="<%= image_url(content_for?(:meta_image) ? yield(:meta_image) : "meta.png") %>">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ffe00d">
+    <meta name="msapplication-TileColor" content="#ffe00d">
+    <meta name="theme-color" content="#ffe00d">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
@@ -15,26 +39,24 @@
 
   <body class="dark:bg-black dark:text-white">
     <% if user_signed_in? %>
-      <div class="absolute top-0 right-0 px-4 py-2 bg-gold-400 text-black">
+      <div class="absolute top-0 right-0 px-4 py-2 text-black bg-gold-400">
         <%= button_to "Sign out", session_path, method: :delete %>
       </div>
     <% end %>
-    <div class="md:flex items-start gap-4 p-8 md:py-20">
-      <a href="/" class="text-gold-500 text-6xl font-semibold hover:text-gold-400 w-14 text-right">
-        <%= random_symbol %>
-      </a>
+    <div class="items-start gap-4 p-8 md:flex md:py-20">
+      <a href="/" class="text-6xl font-semibold text-right text-gold-500 hover:text-gold-400 w-14">&#10626;&#10650;</a>
       <div>
-        <header class="prose dark:prose-invert font-serif mb-10 max-w-none">
-          <h1 class="text-6xl font-light tracking-tight mb-3">Josh Pigford</h1>
+        <header class="mb-10 font-serif prose dark:prose-invert max-w-none">
+          <h1 class="mb-3 text-6xl font-light tracking-tight">Josh Pigford</h1>
 
           <p class="text-xl">
-            <%= link_to "Home", root_path %> / <%= link_to "Articles", articles_path %> / <%= link_to "Projects", projects_path %> / <%= link_to "Investments", investments_path %> / <%= link_to "Podcasts", podcasts_path %> / <%= link_to "Books", books_path %> / <%= link_to "Toys", toys_path %>
+            <%= link_to "Home", root_path %> / <%= link_to "Articles", articles_path %> / <%= link_to "Projects", projects_path %> / <%= link_to "Investments", investments_path %> / <%= link_to "Podcasts", podcasts_path %> / <%= link_to "Books", books_path %>
           </p>
         </header>
-        <div class="prose dark:prose-invert font-serif">
+        <div class="font-serif prose dark:prose-invert">
           <%= yield %>
         </div>
-        <footer class="prose dark:prose-invert font-serif my-12 text-sm text-gray-400">
+        <footer class="my-12 font-serif text-sm prose text-gray-400 dark:prose-invert">
           <p>
             This thing is <a href="https://github.com/Shpigford/joshpigford">open source</a>, for better or worse.
           </p>

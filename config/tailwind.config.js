@@ -14,8 +14,8 @@ module.exports = {
         serif: ["Gambarino-Regular", ...defaultTheme.fontFamily.serif],
       },
       colors: {
-        white: "#eee",
-        black: "#111",
+        white: "#F0EFEA",
+        black: "#1B1A19",
         gold: {
           "50": "#ffffe7",
           "100": "#ffffc1",
