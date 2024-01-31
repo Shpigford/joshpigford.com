@@ -1,0 +1,8 @@
+<div>
+  <nav aria-label="breadcrumb">
+    <%= link_to 'Podcasts', podcasts_path %>
+  </nav>
+  <h1 class="font-serif text-4xl">Edit '<%= @podcast.title %>'</h1>
+</div>
+
+<%= render 'form', podcast: @podcast %>
