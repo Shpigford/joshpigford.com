@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  artist: MyString
+  manufacturer: MyString
+  release_date: 2024-01-31
+  size: MyString
+  platform: MyString
+  color: MyString
+  series: MyString
+  original_price: 1
+
+two:
+  name: MyString
+  description: MyText
+  artist: MyString
+  manufacturer: MyString
+  release_date: 2024-01-31
+  size: MyString
+  platform: MyString
+  color: MyString
+  series: MyString
+  original_price: 1
