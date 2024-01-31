@@ -28,8 +28,8 @@
           <h1 class="text-6xl font-light tracking-tight mb-3">Josh Pigford</h1>
 
           <p class="text-xl">
-            <a href="/">Home</a> / <a href="/">Articles</a> / <a href="/">Projects</a> / <a href="/">Investments</a> / <a href="/">Podcasts</a> / <a href="/">Reading</a> / <a href="/">Toys</a> / <a href="/">Keyboards</a>
-        <div>
+            <%= link_to "Home", root_path %> / <%= link_to "Articles", articles_path %> / <a href="/">Projects</a> / <a href="/">Investments</a> / <a href="/">Podcasts</a> / <a href="/">Reading</a> / <a href="/">Toys</a> / <a href="/">Keyboards</a>
+        <div className="prose dark:prose-invert font-serif max-w-full w-full">
         <%= yield %>
         </div>
         <footer class="prose dark:prose-invert font-serif my-12 text-sm text-gray-400">

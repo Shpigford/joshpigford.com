@@ -2,6 +2,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def authenticate_user!
+    redirect_to root_path unless user_signed_in?
+  end
+
   def current_user
     Current.user || authenticate_user_from_session
   end
