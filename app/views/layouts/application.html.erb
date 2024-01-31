@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <meta name="title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
-    <meta name="description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Maker. Dabbler. Founder and CEO of Maybe." %>">
+    <meta name="description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
-    <meta property="og:description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Maker. Dabbler. Founder and CEO of Maybe." %>">
+    <meta property="og:description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
     <meta property="og:image" content="<%= image_url(content_for?(:meta_image) ? yield(:meta_image) : "meta.png") %>">
+    <%= yield :meta %>
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
-    <meta property="twitter:description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Maker. Dabbler. Founder and CEO of Maybe." %>">
+    <meta property="twitter:description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
     <meta property="twitter:image" content="<%= image_url(content_for?(:meta_image) ? yield(:meta_image) : "meta.png") %>">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">

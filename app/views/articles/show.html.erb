@@ -18,3 +18,21 @@
 <article>
   <%= markdown @article.body %>
 </article>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://joshpigford.com/articles/<%= @article.slug %>"
+  },
+  "headline": "<%= @article.title %>",
+  "author": {
+    "@type": "Person",
+    "name": "Josh Pigford",
+    "url": "https://joshpigford.com"
+  },
+  "datePublished": "<%= @article.publish_at.strftime("%Y-%m-%d") %>"
+}
+</script>
