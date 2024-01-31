@@ -1,0 +1,46 @@
+<%= form_with model: @project do |form| %>
+  <% if form.object.errors.any? %>
+    <% form.object.errors.full_messages.each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :name, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :name, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :slug, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :slug, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :link, class: "block text-sm font-bold mb-2" %>
+    <%= form.url_field :link, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :year, class: "block text-sm font-bold mb-2" %>
+    <%= form.number_field :year, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :description, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_area :description, rows: 5, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :outcome, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_area :outcome, rows: 5, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :notes, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_area :notes, rows: 5, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= form.submit form.object.new_record? ? "Add Project" : "Update Project", class: "bg-gold-500 hover:bg-gold-600 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+  </div>
+<% end %>

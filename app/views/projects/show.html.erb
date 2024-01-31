@@ -1,0 +1,27 @@
+<div>
+  <nav aria-label="breadcrumb">
+    <%= link_to 'Projects', projects_path %> <span class="text-gold-400">⦂⦚</span>
+  </nav>
+  <h1 class="font-serif text-4xl mt-2 mb-0 flex items-center gap-x-3"><%= @project.name %> <span class="text-gray-400">⦚</span> <span class="text-gray-200 text-lg"><%= @project.year %></span></h1>
+  <p class="text-lg mt-1"><%= @project.description %></p>
+
+  <span class="flex space-x-2">
+    <%= link_to 'Edit', edit_project_path(@project), class: 'text-blue-500 no-thick-link' %>
+    <span> &bull;</span>
+    <%= button_to 'Delete', project_path(@project), method: :delete, data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, class: 'text-red-500' %>
+  </span>
+</div>
+
+<% if @project.notes.present? %>
+  <div>
+    <h2 class="font-serif text-2xl mt-8 mb-0">A bit more background</h2>
+    <p class="text-lg mt-1"><%= @project.notes %></p>
+  </div>
+<% end %>
+
+<h2 class="font-serif text-2xl mt-8 mb-0">What happened?</h2>
+<p class="text-lg mt-1"><%= @project.outcome %></p>
+
+<% if @project.link.present? %>
+  <p class="mt-8"><%= link_to "Check it out →", @project.link, target: "_blank", rel: "noopener noreferrer", class: "text-2xl" %></p>
+<% end %>

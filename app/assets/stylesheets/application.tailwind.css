@@ -16,6 +16,12 @@
   background-size: 100% 0.2em;
 }
 
+.no-thick-link {
+  text-decoration: none !important;
+  background-image: none !important;
+  transition: none !important;
+}
+
 @font-face {
   font-family: "Gambarino-Regular";
   src: url("Gambarino-Regular.eot");
