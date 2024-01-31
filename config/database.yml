@@ -79,6 +79,3 @@ test:
 #
 production:
   <<: *default
-  database: joshpigfordcom_production
-  username: joshpigfordcom
-  password: <%= ENV["JOSHPIGFORDCOM_DATABASE_PASSWORD"] %>
