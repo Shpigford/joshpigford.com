@@ -1,7 +1,9 @@
+<% title "Podcasts" %>
+
 <div class="flex items-start">
   <h1 class="font-serif text-4xl">Podcasts</h1>
   <% if user_signed_in? %>
-    <span class="ml-4 mt-2"><%= link_to 'Add New Podcast', new_podcast_path %></span>
+    <span class="mt-2 ml-4"><%= link_to 'Add New Podcast', new_podcast_path %></span>
   <% end %>
 </div>
 

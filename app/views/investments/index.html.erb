@@ -1,10 +1,12 @@
+<% title "Investments" %>
+
 <div class="flex items-start">
   <h1 class="font-serif text-4xl">Investments</h1>
   <% if user_signed_in? %>
-    <span class="ml-4 mt-2"><%= link_to 'Add New Investment', new_investment_path %></span>
+    <span class="mt-2 ml-4"><%= link_to 'Add New Investment', new_investment_path %></span>
   <% end %>
 </div>
-<p class="text-lg mt-0">I've been doing tiny investments in startups since 2021, primarily to just get my feet wet and to diversify my high-level personal finance holdings. Here are the investments I've made.</p>
+<p class="mt-0 text-lg">I've been doing tiny investments in startups since 2021, primarily to just get my feet wet and to diversify my high-level personal finance holdings. Here are the investments I've made.</p>
 
 <table>
   <thead>

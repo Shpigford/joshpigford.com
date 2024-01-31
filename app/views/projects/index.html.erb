@@ -1,10 +1,12 @@
+<% title "Projects" %>
+
 <div class="flex items-start mb-0">
   <h1 class="font-serif text-4xl">Projects</h1>
   <% if user_signed_in? %>
-    <span class="ml-4 mt-2"><%= link_to 'Add New Project', new_project_path %></span>
+    <span class="mt-2 ml-4"><%= link_to 'Add New Project', new_project_path %></span>
   <% end %>
 </div>
-<p class="text-lg mt-0">I&apos;ve worked on (and continue to work on) an absurd number of things. Current tally? <%= @projects.length %> projects.</p>
+<p class="mt-0 text-lg">I&apos;ve worked on (and continue to work on) an absurd number of things. Current tally? <%= @projects.length %> projects.</p>
 
 
 <table>

@@ -1,7 +1,9 @@
+<% title "Articles" %>
+
 <div class="flex items-start">
   <h1 class="font-serif text-4xl">Articles</h1>
   <% if user_signed_in? %>
-    <span class="ml-4 mt-2"><%= link_to 'Add New Article', new_article_path %></span>
+    <span class="mt-2 ml-4"><%= link_to 'Add New Article', new_article_path %></span>
   <% end %>
 </div>
 
