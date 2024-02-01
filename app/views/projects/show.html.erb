@@ -6,12 +6,13 @@
   </nav>
   <h1 class="flex items-center mt-2 mb-0 font-serif text-4xl gap-x-3"><%= @project.name %> <span class="text-gray-400">⦚</span> <span class="text-lg text-gray-200"><%= @project.year %></span></h1>
   <p class="mt-1 text-lg"><%= @project.description %></p>
-
+  <% if user_signed_in? %>
   <span class="flex space-x-2">
     <%= link_to 'Edit', edit_project_path(@project), class: 'text-blue-500 no-thick-link' %>
     <span> &bull;</span>
     <%= button_to 'Delete', project_path(@project), method: :delete, data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, class: 'text-red-500' %>
   </span>
+  <% end %>
 </div>
 
 <% if @project.notes.present? %>
