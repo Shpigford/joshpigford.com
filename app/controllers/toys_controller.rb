@@ -11,6 +11,7 @@ class ToysController < ApplicationController
 
   def show
     @toy = Toy.find_by(id: params[:id])
+    @full_width = true
   end
 
   def create

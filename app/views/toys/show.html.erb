@@ -1,4 +1,62 @@
+<% title @toy.name %>
+
 <div>
-  <h1 class="font-bold text-4xl">Toys#show</h1>
-  <p>Find me in app/views/toys/show.html.erb</p>
+  <nav aria-label="breadcrumb">
+    <%= link_to 'Toys', toys_path %> <span class="text-gold-400">⦂⦚</span>
+  </nav>
+  <h1 class="flex items-center mt-2 mb-0 font-serif text-4xl gap-x-3"><%= @toy.name %></h1>
+  <span class="flex space-x-2">
+    <%= link_to 'Edit', edit_toy_path(@toy), class: 'text-blue-500 no-thick-link' %>
+    <span> &bull;</span>
+    <%= button_to 'Delete', toy_path(@toy), method: :delete, data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, class: 'text-red-500' %>
+  </span>
+</div>
+
+<div class="flex items-start space-x-12">
+  <div class="w-3/5 max-h-[800px] relative overflow-hidden" data-controller="image-rotator">
+    <div class="absolute z-10 hidden text-3xl text-black stop-icon top-8 right-5">⏹</div>
+    <% @toy.images.each_with_index do |image, index| %>
+      <p class="<%= 'hidden' unless index.zero? %>" data-image-rotator-target="image">
+        <%= image_tag url_for(image.variant(resize_to_fill: [800, 800])), class: "w-full h-auto max-h-[800px] object-contain transition-opacity duration-500 ease-in-out rounded-md" %>
+      </p>
+    <% end %>
+  </div>
+  <table class="w-2/5">
+    <tr> 
+      <th>Artist</th>
+      <td><%= @toy.artist %></td>
+    </tr>
+    <tr> 
+      <th>Manufacturer</th>
+      <td><%= @toy.manufacturer %></td>
+    </tr>
+    <tr> 
+      <th>Platform</th>
+      <td><%= @toy.platform %></td>
+    </tr>
+    <% if @toy.series.present? %>
+    <tr> 
+      <th>Series</th>
+      <td><%= @toy.series %></td>
+    </tr>
+    <% end %>
+    <tr> 
+      <th>Size</th>
+      <td><%= @toy.size %>"</td>
+    </tr>
+    <tr> 
+      <th>Color</th>
+      <td><%= @toy.color %></td>
+    </tr>
+    <tr> 
+      <th>Released</th>
+      <td><%= @toy.release_date.strftime('%Y') %></td>
+    </tr>
+    <% if @toy.original_price.present? %>
+    <tr> 
+      <th>Original Price</th>
+      <td><%= @toy.original_price %></td>
+    </tr>
+    <% end %>
+  </table>
 </div>

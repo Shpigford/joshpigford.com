@@ -54,7 +54,7 @@
             <%= link_to "Home", root_path %> / <%= link_to "Articles", articles_path %> / <%= link_to "Projects", projects_path %> / <%= link_to "Investments", investments_path %> / <%= link_to "Podcasts", podcasts_path %> / <%= link_to "Books", books_path %>
           </p>
         </header>
-        <div class="font-serif prose dark:prose-invert">
+        <div class="font-serif prose dark:prose-invert <%= 'max-w-full w-full' if @full_width == true %>">
           <%= yield %>
         </div>
         <footer class="my-12 font-serif text-sm prose text-gray-400 dark:prose-invert">

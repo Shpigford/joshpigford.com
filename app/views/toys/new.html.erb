@@ -1,4 +1,8 @@
 <div>
-  <h1 class="font-bold text-4xl">Toys#new</h1>
-  <p>Find me in app/views/toys/new.html.erb</p>
+  <nav aria-label="breadcrumb">
+    <%= link_to 'Toys', toys_path %>
+  </nav>
+  <h1 class="font-serif text-4xl">Add a new toy</h1>
 </div>
+
+<%= render 'form', toy: @toy %>

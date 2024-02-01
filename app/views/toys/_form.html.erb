@@ -1,0 +1,61 @@
+<%= form_with model: @toy, html: { multipart: true } do |form| %>
+  <% if form.object.errors.any? %>
+    <% form.object.errors.full_messages.each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :name, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :name, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :description, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_area :description, rows: 3, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :artist, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :artist, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :manufacturer, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :manufacturer, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :release_date, class: "block text-sm font-bold mb-2" %>
+    <%= form.date_field :release_date, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :size, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :size, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :platform, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :platform, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :color, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :color, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :series, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :series, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :images, class: "block text-sm font-bold mb-2" %>
+    <%= form.file_field :images, multiple: true, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= form.submit form.object.new_record? ? "Add Toy" : "Update Toy", class: "bg-gold-500 hover:bg-gold-600 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+  </div>
+<% end %>
