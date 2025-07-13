@@ -69,3 +69,6 @@ Active Storage configured with AWS S3:
 3. Database uses PostgreSQL - ensure it's running locally
 4. Test files use fixtures for data (`test/fixtures/`)
 5. Admin routes at `/admin/*` require authentication
+
+## Development Guidance
+- Toys and Art are different parts of the app. Don't always assume I'm updating both. Focus on the section I specifically mention.
