@@ -74,6 +74,10 @@
     
     <% if user_signed_in? %>
       <div class="mt-8 pt-8 border-t">
+        <%= link_to @owned_art.visible? ? 'Hide' : 'Show', 
+            toggle_visibility_owned_art_path(@owned_art),
+            data: { turbo_method: :patch },
+            class: 'inline-block px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 mr-4' %>
         <%= link_to 'Edit', edit_owned_art_path(@owned_art), class: 'text-gold mr-4' %>
         <%= link_to 'Delete', owned_art_path(@owned_art), 
             data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, 

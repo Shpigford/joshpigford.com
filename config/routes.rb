@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   get 'art/made/:id', to: 'art#made_show', as: :made_art
   
   # Admin routes for managing art
-  resources :owned_arts, except: [:index, :show]
+  resources :owned_arts, except: [:index, :show] do
+    member do
+      patch :toggle_visibility
+    end
+  end
   resources :made_arts, except: [:index, :show]
   
   get "up" => "rails/health#show", as: :rails_health_check

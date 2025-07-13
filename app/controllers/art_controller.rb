@@ -1,6 +1,10 @@
 class ArtController < ApplicationController
   def index
-    @owned_arts = OwnedArt.visible.order(last_synced_at: :desc)
+    @owned_arts = if user_signed_in?
+      OwnedArt.order(last_synced_at: :desc)
+    else
+      OwnedArt.visible.order(last_synced_at: :desc)
+    end
     @made_arts = MadeArt.by_series
     @made_arts_by_series = @made_arts.group_by(&:series_name)
     @full_width = true

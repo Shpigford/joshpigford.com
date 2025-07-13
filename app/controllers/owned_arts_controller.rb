@@ -1,6 +1,6 @@
 class OwnedArtsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_owned_art, only: [:edit, :update, :destroy]
+  before_action :set_owned_art, only: [:edit, :update, :destroy, :toggle_visibility]
   
   def new
     @owned_art = OwnedArt.new
@@ -30,6 +30,11 @@ class OwnedArtsController < ApplicationController
   def destroy
     @owned_art.destroy!
     redirect_to art_index_path, status: :see_other
+  end
+  
+  def toggle_visibility
+    @owned_art.update!(visible: !@owned_art.visible)
+    redirect_back(fallback_location: owned_art_path(@owned_art))
   end
   
   private
