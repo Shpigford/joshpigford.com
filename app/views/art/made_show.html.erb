@@ -1,0 +1,90 @@
+<% title @made_art.title %>
+<div class="mb-4">
+  <%= link_to '← Back to Art', art_index_path, class: 'text-gold' %>
+</div>
+
+<h1 class="font-serif text-5xl mb-8"><%= @made_art.title %></h1>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+  <div>
+    <% if @made_art.images.attached? %>
+      <% if @made_art.images.count > 1 %>
+        <div data-controller="image-rotator" data-image-rotator-index-value="0">
+          <% @made_art.images.each_with_index do |image, index| %>
+            <%= image_tag image.variant(resize_to_fill: [800, 800]), 
+                alt: @made_art.title,
+                class: "w-full rounded-lg shadow-xl #{'hidden' unless index == 0}",
+                data: { "image-rotator-target": "image" } %>
+          <% end %>
+          
+          <div class="flex justify-center mt-4 gap-2">
+            <% @made_art.images.count.times do |index| %>
+              <button 
+                data-action="click->image-rotator#show" 
+                data-index="<%= index %>"
+                class="w-3 h-3 rounded-full bg-gray-400 hover:bg-gold <%= 'bg-gold' if index == 0 %>"
+                data-image-rotator-target="indicator">
+              </button>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <%= image_tag @made_art.images.first.variant(resize_to_fill: [800, 800]), 
+            alt: @made_art.title,
+            class: 'w-full rounded-lg shadow-xl' %>
+      <% end %>
+    <% else %>
+      <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+        <span class="text-white text-xl">No image available</span>
+      </div>
+    <% end %>
+  </div>
+  
+  <div>
+    <% if @made_art.series_name.present? %>
+      <p class="text-xl text-white mb-4">Part of the <em><%= @made_art.series_name %></em> series</p>
+    <% end %>
+    
+    <% if @made_art.description.present? %>
+      <div class="prose dark:prose-invert mb-8">
+        <%= simple_format(@made_art.description) %>
+      </div>
+    <% end %>
+    
+    <div class="border-t pt-6">
+      <h2 class="font-semibold text-lg mb-4">Details</h2>
+      
+      <dl class="grid grid-cols-1 gap-3">
+        <% if @made_art.year.present? %>
+          <div>
+            <dt class="font-semibold text-white">Year</dt>
+            <dd><%= @made_art.year %></dd>
+          </div>
+        <% end %>
+        
+        <% if @made_art.medium.present? %>
+          <div>
+            <dt class="font-semibold text-white">Medium</dt>
+            <dd><%= @made_art.medium %></dd>
+          </div>
+        <% end %>
+        
+        <% if @made_art.dimensions.present? %>
+          <div>
+            <dt class="font-semibold text-white">Dimensions</dt>
+            <dd><%= @made_art.dimensions %></dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+    
+    <% if user_signed_in? %>
+      <div class="mt-8 pt-8 border-t">
+        <%= link_to 'Edit', edit_made_art_path(@made_art), class: 'text-gold mr-4' %>
+        <%= link_to 'Delete', made_art_path(@made_art), 
+            data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, 
+            class: 'text-red-600' %>
+      </div>
+    <% end %>
+  </div>
+</div>

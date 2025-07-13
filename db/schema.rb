@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_31_191854) do
+ActiveRecord::Schema[7.1].define(version: 2025_07_13_104937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -68,6 +68,41 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_31_191854) do
     t.string "link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "made_arts", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "series_name"
+    t.integer "year"
+    t.string "medium"
+    t.string "dimensions"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["series_name"], name: "index_made_arts_on_series_name"
+    t.index ["slug"], name: "index_made_arts_on_slug", unique: true
+  end
+
+  create_table "owned_arts", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "token_id"
+    t.string "contract_address"
+    t.string "contract_name"
+    t.string "collection_name"
+    t.string "collection_slug"
+    t.string "image_url"
+    t.jsonb "metadata"
+    t.boolean "visible", default: true
+    t.string "external_url"
+    t.string "blockchain", default: "ethereum"
+    t.string "token_type"
+    t.datetime "last_synced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contract_address", "token_id"], name: "index_owned_arts_on_contract_address_and_token_id", unique: true
+    t.index ["visible"], name: "index_owned_arts_on_visible"
   end
 
   create_table "podcasts", force: :cascade do |t|

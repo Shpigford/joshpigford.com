@@ -1,0 +1,12 @@
+<h1 class="font-serif text-4xl mb-8">Edit Artwork</h1>
+
+<div class="max-w-2xl">
+  <%= render 'form' %>
+</div>
+
+<div class="mt-8 flex gap-4">
+  <%= link_to '← Back to Art', art_index_path, class: 'text-gold' %>
+  <%= link_to 'Delete', made_art_path(@made_art), 
+      data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, 
+      class: 'text-red-600' %>
+</div>

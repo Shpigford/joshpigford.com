@@ -1,0 +1,84 @@
+<% title @owned_art.name %>
+<div class="mb-4">
+  <%= link_to '← Back to Art', art_index_path, class: 'text-gold' %>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+  <div>
+    <% if @owned_art.image_url.present? %>
+      <%= image_tag @owned_art.image_url, 
+          alt: @owned_art.name,
+          class: 'w-full rounded-lg shadow-xl' %>
+    <% else %>
+      <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+        <span class="text-white text-xl">No image available</span>
+      </div>
+    <% end %>
+  </div>
+  
+  <div>
+    <h1 class="font-serif text-4xl mb-4"><%= @owned_art.name %></h1>
+    
+    <% if @owned_art.collection_name.present? %>
+      <p class="text-xl text-white mb-6"><%= @owned_art.collection_name %></p>
+    <% end %>
+    
+    <% if @owned_art.description.present? %>
+      <div class="prose dark:prose-invert mb-8">
+        <%= simple_format(@owned_art.description) %>
+      </div>
+    <% end %>
+    
+    <div class="border-t pt-6">
+      <h2 class="font-semibold text-lg mb-4">Details</h2>
+      
+      <dl class="grid grid-cols-1 gap-3">
+        <% if @owned_art.token_id.present? %>
+          <div>
+            <dt class="font-semibold text-white">Token ID</dt>
+            <dd><%= @owned_art.token_id %></dd>
+          </div>
+        <% end %>
+        
+        <% if @owned_art.contract_name.present? %>
+          <div>
+            <dt class="font-semibold text-white">Contract</dt>
+            <dd><%= @owned_art.contract_name %></dd>
+          </div>
+        <% end %>
+        
+        <% if @owned_art.token_type.present? %>
+          <div>
+            <dt class="font-semibold text-white">Type</dt>
+            <dd><%= @owned_art.token_type %></dd>
+          </div>
+        <% end %>
+        
+        <% if @owned_art.blockchain.present? %>
+          <div>
+            <dt class="font-semibold text-white">Blockchain</dt>
+            <dd class="capitalize"><%= @owned_art.blockchain %></dd>
+          </div>
+        <% end %>
+      </dl>
+      
+      <% if @owned_art.external_url.present? %>
+        <div class="mt-6">
+          <%= link_to 'View on External Site →', @owned_art.external_url, 
+              target: '_blank', 
+              rel: 'noopener',
+              class: 'text-gold hover:underline' %>
+        </div>
+      <% end %>
+    </div>
+    
+    <% if user_signed_in? %>
+      <div class="mt-8 pt-8 border-t">
+        <%= link_to 'Edit', edit_owned_art_path(@owned_art), class: 'text-gold mr-4' %>
+        <%= link_to 'Delete', owned_art_path(@owned_art), 
+            data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, 
+            class: 'text-red-600' %>
+      </div>
+    <% end %>
+  </div>
+</div>

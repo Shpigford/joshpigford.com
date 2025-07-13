@@ -124,6 +124,12 @@ GEM
       ruby2_keywords
     error_highlight (0.6.0)
     erubi (1.12.0)
+    faraday (2.13.2)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-net_http (3.4.1)
+      net-http (>= 0.5.0)
     ffi (1.16.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -148,9 +154,11 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
+    json (2.12.2)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.7.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -166,6 +174,8 @@ GEM
     minitest (5.21.2)
     msgpack (1.7.2)
     mutex_m (0.2.0)
+    net-http (0.6.0)
+      uri
     net-imap (0.4.9.1)
       date
       net-protocol
@@ -274,6 +284,7 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    uri (1.0.3)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -292,6 +303,7 @@ PLATFORMS
   aarch64-linux
   arm64-darwin-22
   arm64-darwin-23
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
@@ -302,6 +314,7 @@ DEPENDENCIES
   debug
   dotenv-rails
   error_highlight (>= 0.4.0)
+  faraday
   hotwire-livereload
   image_processing (~> 1.2)
   importmap-rails
