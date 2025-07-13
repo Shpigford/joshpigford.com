@@ -9,20 +9,20 @@
     <% else %>
       <span></span>
     <% end %>
-    
+
     <div class="flex items-center gap-4">
       <span class="text-sm text-gray-500">Sort:</span>
       <div class="flex gap-3 text-sm">
-        <%= link_to "Random", art_index_path(sort: 'random'), 
+        <%= link_to "Random", art_index_path(sort: 'random'),
             class: "#{@sort_by == 'random' ? 'text-gold font-semibold' : 'text-gray-600 hover:text-gold'} transition-colors" %>
         <span class="text-gray-300">|</span>
-        <%= link_to "Name", art_index_path(sort: 'name'), 
+        <%= link_to "Name", art_index_path(sort: 'name'),
             class: "#{@sort_by == 'name' ? 'text-gold font-semibold' : 'text-gray-600 hover:text-gold'} transition-colors" %>
         <span class="text-gray-300">|</span>
-        <%= link_to "Collection", art_index_path(sort: 'collection'), 
+        <%= link_to "Collection", art_index_path(sort: 'collection'),
             class: "#{@sort_by == 'collection' ? 'text-gold font-semibold' : 'text-gray-600 hover:text-gold'} transition-colors" %>
         <span class="text-gray-300">|</span>
-        <%= link_to "Blockchain", art_index_path(sort: 'blockchain'), 
+        <%= link_to "Blockchain", art_index_path(sort: 'blockchain'),
             class: "#{@sort_by == 'blockchain' ? 'text-gold font-semibold' : 'text-gray-600 hover:text-gold'} transition-colors" %>
       </div>
     </div>
@@ -34,7 +34,7 @@
         <div class="relative group <%= 'opacity-50' unless art.visible? %>">
           <%= link_to owned_art_path(id: art), class: 'block no-thick-link' do %>
             <% if art.animation_url.present? %>
-              <video autoplay loop muted playsinline 
+              <video autoplay loop muted playsinline
                      class="w-full aspect-square object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow my-2">
                 <source src="<%= art.animation_url %>" type="video/mp4">
                 <%= image_tag art.image_url,
@@ -48,13 +48,16 @@
             <% end %>
           <% end %>
           <div>
-            <h3 class="font-semibold mt-0">
+            <h3 class="font-semibold my-0">
               <%= link_to art.name, owned_art_path(id: art), class: 'thick-link' %>
             </h3>
+            <% if art.collection_name.present? %>
+              <p class="text-sm text-gray-600 mt-0.5"><%= art.collection_name %></p>
+            <% end %>
           </div>
           <% if user_signed_in? %>
             <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-              <%= link_to art.visible? ? 'Hide' : 'Show', 
+              <%= link_to art.visible? ? 'Hide' : 'Show',
                   toggle_visibility_owned_art_path(art),
                   data: { turbo_method: :patch },
                   class: 'bg-gray-700 text-white px-2 py-1 rounded shadow text-sm hover:bg-gray-600' %>
