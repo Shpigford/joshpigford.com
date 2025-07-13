@@ -1,10 +1,24 @@
 class ArtController < ApplicationController
   def index
+    @sort_by = params[:sort] || 'random'
+    
     @owned_arts = if user_signed_in?
-      OwnedArt.order(Arel.sql('RANDOM()'))
+      OwnedArt.all
     else
-      OwnedArt.visible.order(Arel.sql('RANDOM()'))
+      OwnedArt.visible
     end
+    
+    @owned_arts = case @sort_by
+    when 'name'
+      @owned_arts.order(:name)
+    when 'collection'
+      @owned_arts.order(:collection_name, :name)
+    when 'blockchain'
+      @owned_arts.order(:blockchain, :name)
+    else
+      @owned_arts.order(Arel.sql('RANDOM()'))
+    end
+    
     @made_arts = MadeArt.order(Arel.sql('RANDOM()'))
     @made_arts_by_series = @made_arts.group_by(&:series_name)
     @full_width = true

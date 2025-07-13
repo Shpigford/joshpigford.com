@@ -3,11 +3,30 @@
 <p class="mt-0 text-lg">A curated collection of digital art and NFTs that I've collected over the years.</p>
 
 <div class="mb-16">
-  <% if user_signed_in? %>
-    <div class="flex items-center mb-8">
+  <div class="flex items-center justify-between mb-8">
+    <% if user_signed_in? %>
       <span><%= link_to 'Add New', new_owned_art_path, class: 'text-gold' %></span>
+    <% else %>
+      <span></span>
+    <% end %>
+    
+    <div class="flex items-center gap-4">
+      <span class="text-sm text-gray-500">Sort:</span>
+      <div class="flex gap-3 text-sm">
+        <%= link_to "Random", art_index_path(sort: 'random'), 
+            class: "#{@sort_by == 'random' ? 'text-gold font-semibold' : 'text-gray-600 hover:text-gold'} transition-colors" %>
+        <span class="text-gray-300">|</span>
+        <%= link_to "Name", art_index_path(sort: 'name'), 
+            class: "#{@sort_by == 'name' ? 'text-gold font-semibold' : 'text-gray-600 hover:text-gold'} transition-colors" %>
+        <span class="text-gray-300">|</span>
+        <%= link_to "Collection", art_index_path(sort: 'collection'), 
+            class: "#{@sort_by == 'collection' ? 'text-gold font-semibold' : 'text-gray-600 hover:text-gold'} transition-colors" %>
+        <span class="text-gray-300">|</span>
+        <%= link_to "Blockchain", art_index_path(sort: 'blockchain'), 
+            class: "#{@sort_by == 'blockchain' ? 'text-gold font-semibold' : 'text-gray-600 hover:text-gold'} transition-colors" %>
+      </div>
     </div>
-  <% end %>
+  </div>
 
   <% if @owned_arts.any? %>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
