@@ -5,7 +5,16 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
   <div>
-    <% if @owned_art.image_url.present? %>
+    <% if @owned_art.animation_url.present? %>
+      <video controls autoplay loop muted playsinline class="w-full rounded-lg shadow-xl">
+        <source src="<%= @owned_art.animation_url %>" type="video/mp4">
+        <% if @owned_art.image_url.present? %>
+          <%= image_tag @owned_art.image_url, 
+              alt: @owned_art.name,
+              class: 'w-full rounded-lg shadow-xl' %>
+        <% end %>
+      </video>
+    <% elsif @owned_art.image_url.present? %>
       <%= image_tag @owned_art.image_url, 
           alt: @owned_art.name,
           class: 'w-full rounded-lg shadow-xl' %>

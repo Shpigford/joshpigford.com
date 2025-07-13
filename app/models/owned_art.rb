@@ -25,6 +25,20 @@ class OwnedArt < ApplicationRecord
                      nft_data.dig('media', 0, 'gateway') ||
                      nft_data.dig('media', 0, 'raw')
     
+    # Handle animation URL - only if it's a video
+    animation_content_type = nft_data.dig('animation', 'contentType')
+    if animation_content_type&.start_with?('video/')
+      self.animation_url = nft_data.dig('animation', 'cachedUrl') || 
+                           nft_data.dig('animation', 'originalUrl')
+    elsif nft_data.dig('raw', 'metadata', 'animation_details', 'format').present?
+      # Check raw metadata for video formats
+      format = nft_data.dig('raw', 'metadata', 'animation_details', 'format')&.downcase
+      if ['mp4', 'webm', 'mov', 'avi'].include?(format)
+        self.animation_url = nft_data.dig('raw', 'metadata', 'animation_url') ||
+                             nft_data.dig('raw', 'metadata', 'animation')
+      end
+    end
+    
     self.metadata = nft_data
     self.last_synced_at = Time.current
     save

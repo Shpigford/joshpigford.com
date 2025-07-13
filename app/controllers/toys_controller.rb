@@ -2,7 +2,7 @@ class ToysController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @toys = Toy.all.order(:platform, :name)
+    @toys = Toy.all.order(Arel.sql('RANDOM()'))
   end
 
   def new

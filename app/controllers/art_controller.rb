@@ -1,11 +1,11 @@
 class ArtController < ApplicationController
   def index
     @owned_arts = if user_signed_in?
-      OwnedArt.order(last_synced_at: :desc)
+      OwnedArt.order(Arel.sql('RANDOM()'))
     else
-      OwnedArt.visible.order(last_synced_at: :desc)
+      OwnedArt.visible.order(Arel.sql('RANDOM()'))
     end
-    @made_arts = MadeArt.by_series
+    @made_arts = MadeArt.order(Arel.sql('RANDOM()'))
     @made_arts_by_series = @made_arts.group_by(&:series_name)
     @full_width = true
   end
