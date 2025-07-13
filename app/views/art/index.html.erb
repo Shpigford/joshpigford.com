@@ -1,0 +1,38 @@
+<% title "Art" %>
+<h1 class="font-serif text-6xl mb-12">Art</h1>
+<p class="mt-0 text-lg">A curated collection of digital art and NFTs that I've collected over the years.</p>
+
+<div class="mb-16">
+  <% if user_signed_in? %>
+    <div class="flex items-center mb-8">
+      <span><%= link_to 'Add New', new_owned_art_path, class: 'text-gold' %></span>
+    </div>
+  <% end %>
+
+  <% if @owned_arts.any? %>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+      <% @owned_arts.select { |art| art.image_url.present? }.each do |art| %>
+        <div class="relative group">
+          <%= link_to owned_art_path(id: art), class: 'block no-thick-link' do %>
+            <%= image_tag art.image_url,
+                alt: art.name,
+                class: 'w-full aspect-square object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow my-2' %>
+          <% end %>
+          <div>
+            <h3 class="font-semibold mt-0">
+              <%= link_to art.name, owned_art_path(id: art), class: 'thick-link' %>
+            </h3>
+          </div>
+          <% if user_signed_in? %>
+            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <%= link_to 'Edit', edit_owned_art_path(art),
+                  class: 'bg-white px-2 py-1 rounded shadow text-sm' %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-600">No NFTs to display.</p>
+  <% end %>
+</div>
