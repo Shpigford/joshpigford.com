@@ -1,13 +1,13 @@
 <% title "Art" %>
 <h1 class="font-serif text-6xl mb-12">Art</h1>
-<p class="mt-0 text-lg">A curated collection of digital art and NFTs that I've collected over the years.</p>
+<p class="mt-0 text-lg">Digital art and NFTs that I've collected over the years. You can check out art that I've made as well as purchase pieces from my collection on <a href="https://objkt.com/@joshpigford" class="text-gold">Objkt</a> and <a href="https://opensea.io/0xa947a87f204f1f5203bfa6c8a5912d428a6525d7" class="text-gold">OpenSea</a>.</p>
 
 <div class="mb-16">
   <div class="flex items-center justify-between mb-8">
     <% if user_signed_in? %>
-      <span><%= link_to 'Add New', new_owned_art_path, class: 'text-gold' %></span>
+    <span><%= link_to 'Add New', new_owned_art_path, class: 'text-gold' %></span>
     <% else %>
-      <span></span>
+    <span></span>
     <% end %>
 
     <div class="flex items-center gap-4">
@@ -29,46 +29,45 @@
   </div>
 
   <% if @owned_arts.any? %>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-      <% @owned_arts.select { |art| art.image_url.present? }.each do |art| %>
-        <div class="relative group <%= 'opacity-50' unless art.visible? %>">
-          <%= link_to owned_art_path(id: art), class: 'block no-thick-link' do %>
-            <% if art.animation_url.present? %>
-              <video autoplay loop muted playsinline
-                     class="w-full aspect-square object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow my-2">
-                <source src="<%= art.animation_url %>" type="video/mp4">
-                <%= image_tag art.image_url,
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+    <% @owned_arts.select { |art| art.image_url.present? }.each do |art| %>
+    <div class="relative group <%= 'opacity-50' unless art.visible? %>">
+      <%= link_to owned_art_path(id: art), class: 'block no-thick-link' do %>
+      <% if art.animation_url.present? %>
+      <video autoplay loop muted playsinline class="w-full aspect-square object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow my-2">
+        <source src="<%= art.animation_url %>" type="video/mp4">
+        <%= image_tag art.image_url,
                     alt: art.name,
                     class: 'w-full aspect-square object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow my-2' %>
-              </video>
-            <% else %>
-              <%= image_tag art.image_url,
+      </video>
+      <% else %>
+      <%= image_tag art.image_url,
                   alt: art.name,
                   class: 'w-full aspect-square object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow my-2' %>
-            <% end %>
-          <% end %>
-          <div>
-            <h3 class="font-semibold my-0">
-              <%= link_to art.name, owned_art_path(id: art), class: 'thick-link' %>
-            </h3>
-            <% if art.collection_name.present? %>
-              <p class="text-sm text-gray-600 mt-0.5"><%= art.collection_name %></p>
-            <% end %>
-          </div>
-          <% if user_signed_in? %>
-            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-              <%= link_to art.visible? ? 'Hide' : 'Show',
+      <% end %>
+      <% end %>
+      <div>
+        <h3 class="font-semibold my-0">
+          <%= link_to art.name, owned_art_path(id: art), class: 'thick-link' %>
+        </h3>
+        <% if art.collection_name.present? %>
+        <p class="text-sm text-gray-600 mt-0.5"><%= art.collection_name %></p>
+        <% end %>
+      </div>
+      <% if user_signed_in? %>
+      <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+        <%= link_to art.visible? ? 'Hide' : 'Show',
                   toggle_visibility_owned_art_path(art),
                   data: { turbo_method: :patch },
                   class: 'bg-gray-700 text-white px-2 py-1 rounded shadow text-sm hover:bg-gray-600' %>
-              <%= link_to 'Edit', edit_owned_art_path(art),
+        <%= link_to 'Edit', edit_owned_art_path(art),
                   class: 'bg-white px-2 py-1 rounded shadow text-sm' %>
-            </div>
-          <% end %>
-        </div>
+      </div>
       <% end %>
     </div>
+    <% end %>
+  </div>
   <% else %>
-    <p class="text-gray-600">No NFTs to display.</p>
+  <p class="text-gray-600">No NFTs to display.</p>
   <% end %>
 </div>
