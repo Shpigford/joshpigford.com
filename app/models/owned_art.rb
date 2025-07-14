@@ -2,7 +2,7 @@ class OwnedArt < ApplicationRecord
   validates :name, presence: true
   validates :token_id, presence: true
   validates :contract_address, presence: true
-  validates :contract_address, uniqueness: { scope: :token_id }
+  validates :contract_address, uniqueness: { scope: :token_id, case_sensitive: false }
   
   scope :visible, -> { where(visible: true) }
   
@@ -10,7 +10,26 @@ class OwnedArt < ApplicationRecord
     "#{id}-#{name.parameterize}"
   end
   
+  def attributes_list
+    return [] unless metadata.present?
+    
+    # Try multiple possible locations for attributes
+    attrs = metadata.dig('token', 'metadata', 'attributes') ||  # Tezos format
+            metadata.dig('raw', 'metadata', 'attributes') ||     # Ethereum format
+            metadata.dig('metadata', 'attributes') ||
+            metadata['attributes'] ||
+            []
+    
+    # Ensure it's an array
+    attrs.is_a?(Array) ? attrs : []
+  end
+  
   def update_from_alchemy(nft_data)
+    # Update contract_address with proper casing if this is an existing record
+    if persisted? && self.contract_address != nft_data.dig('contract', 'address')
+      self.contract_address = nft_data.dig('contract', 'address')
+    end
+    
     self.name = nft_data['name'] || nft_data['title'] || "Unknown NFT"
     self.description = nft_data['description']
     self.token_type = nft_data['tokenType']

@@ -81,11 +81,16 @@ namespace :nft do
 
           next if contract_address.blank? || token_id.blank?
 
-          # Find or create the NFT
-          owned_art = OwnedArt.find_or_initialize_by(
-            contract_address: contract_address.downcase,
-            token_id: token_id
-          )
+          # Find or create the NFT with case-insensitive matching
+          owned_art = OwnedArt.where(
+            'LOWER(contract_address) = ? AND token_id = ?',
+            contract_address.downcase,
+            token_id
+          ).first_or_initialize do |art|
+            # Use the original case for new records
+            art.contract_address = contract_address
+            art.token_id = token_id
+          end
 
           was_new_record = owned_art.new_record?
 
@@ -183,6 +188,10 @@ namespace :nft do
     base_url = 'https://api.tzkt.io/v1/tokens/balances'
 
     puts "Starting Tezos NFT sync for #{wallet_address}..."
+    
+    # Build contract slug mapping from existing records
+    contract_slug_map = build_contract_slug_mapping
+    puts "Found #{contract_slug_map.size} known contract slugs in database"
 
     total_imported = 0
     total_updated = 0
@@ -231,17 +240,23 @@ namespace :nft do
 
           next if contract_address.blank? || token_id.blank?
 
-          # Find or create the NFT
-          owned_art = OwnedArt.find_or_initialize_by(
-            contract_address: contract_address.downcase,
-            token_id: token_id,
-            blockchain: 'tezos'
-          )
+          # Find or create the NFT with case-insensitive matching
+          owned_art = OwnedArt.where(
+            'LOWER(contract_address) = ? AND token_id = ? AND blockchain = ?',
+            contract_address.downcase,
+            token_id,
+            'tezos'
+          ).first_or_initialize do |art|
+            # Use the original case-sensitive contract address for new records
+            art.contract_address = contract_address
+            art.token_id = token_id
+            art.blockchain = 'tezos'
+          end
 
           was_new_record = owned_art.new_record?
 
           # Update with Tezos data
-          if update_from_tezos(owned_art, item)
+          if update_from_tezos(owned_art, item, contract_slug_map)
             if was_new_record
               total_imported += 1
               puts "  ✓ Imported: #{owned_art.name} (#{contract_address}##{token_id})"
@@ -275,15 +290,50 @@ namespace :nft do
 
   private
 
-  def update_from_tezos(owned_art, tezos_data)
+  def build_contract_slug_mapping
+    # Build a hash mapping contract addresses to slugs from existing records
+    mapping = {}
+    
+    # Get unique contract addresses with their slugs
+    OwnedArt.where.not(contract_slug: nil)
+            .group(:contract_address, :contract_slug)
+            .pluck(:contract_address, :contract_slug)
+            .each do |contract_address, contract_slug|
+      # Store with lowercase key for case-insensitive lookup
+      mapping[contract_address.downcase] = contract_slug
+    end
+    
+    mapping
+  end
+
+  def update_from_tezos(owned_art, tezos_data, contract_slug_map)
     token = tezos_data['token']
     metadata = token['metadata'] || {}
+
+    # Update contract_address with proper casing if this is an existing record
+    if owned_art.persisted? && owned_art.contract_address != token.dig('contract', 'address')
+      owned_art.contract_address = token.dig('contract', 'address')
+    end
 
     owned_art.name = metadata['name'] || "Tezos NFT ##{token['tokenId']}"
     owned_art.description = metadata['description']
     owned_art.token_type = token['standard']&.upcase || 'FA2'
     owned_art.contract_name = token.dig('contract', 'alias') || token.dig('contract', 'address')
     owned_art.collection_name = metadata['symbol'] || token.dig('contract', 'alias')
+
+    # Try to get contract slug from mapping first
+    contract_key = owned_art.contract_address.downcase
+    if contract_slug_map.key?(contract_key)
+      owned_art.contract_slug = contract_slug_map[contract_key]
+    else
+      # Only fetch from Objkt API if we don't have it in our mapping
+      slug = fetch_objkt_contract_slug(owned_art.contract_address, owned_art.token_id)
+      if slug
+        owned_art.contract_slug = slug
+        # Add to mapping for future use in this import run
+        contract_slug_map[contract_key] = slug
+      end
+    end
 
     # Convert IPFS URLs to Cloudflare gateway URLs
     image_uri = metadata['displayUri'] || metadata['thumbnailUri'] || metadata['artifactUri']
@@ -307,5 +357,45 @@ namespace :nft do
 
     # Use ipfs.io gateway
     "https://ipfs.io/ipfs/#{ipfs_hash}"
+  end
+
+  def fetch_objkt_contract_slug(contract_address, token_id)
+    require 'faraday'
+    require 'json'
+
+    conn = Faraday.new(url: 'https://data.objkt.com/v3/graphql') do |faraday|
+      faraday.request :json
+      faraday.response :json
+      faraday.adapter Faraday.default_adapter
+    end
+
+    query = {
+      query: <<~GRAPHQL
+        query {
+          token(
+            where: {
+              fa_contract: { _eq: "#{contract_address}" },
+              token_id: { _eq: "#{token_id}" }
+            }
+          ) {
+            token_id
+            fa {
+              path
+            }
+          }
+        }
+      GRAPHQL
+    }
+
+    begin
+      response = conn.post('', query)
+      if response.status == 200 && response.body['data'] && response.body['data']['token']&.first
+        return response.body['data']['token'].first.dig('fa', 'path')
+      end
+    rescue StandardError => e
+      puts "    ⚠ Failed to fetch contract slug from Objkt: #{e.message}"
+    end
+
+    nil
   end
 end

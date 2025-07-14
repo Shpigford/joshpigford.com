@@ -34,6 +34,20 @@
       <p class="text-xl text-white mb-6"><%= @owned_art.collection_name %></p>
     <% end %>
 
+    <div class="flex gap-4 mb-6">
+      <% if @owned_art.blockchain == 'tezos' && @owned_art.contract_slug.present? %>
+        <%= link_to 'View on Objkt →', "https://objkt.com/tokens/#{@owned_art.contract_slug}/#{@owned_art.token_id}",
+            target: '_blank',
+            rel: 'noopener',
+            class: 'text-gold' %>
+      <% elsif @owned_art.blockchain == 'ethereum' && @owned_art.contract_address.present? %>
+        <%= link_to 'View on OpenSea →', "https://opensea.io/item/ethereum/#{@owned_art.contract_address}/#{@owned_art.token_id}",
+            target: '_blank',
+            rel: 'noopener',
+            class: 'text-gold' %>
+      <% end %>
+    </div>
+
     <% if @owned_art.description.present? %>
       <div class="prose dark:prose-invert mb-8">
         <%= simple_format(@owned_art.description) %>
@@ -72,6 +86,24 @@
           </div>
         <% end %>
       </dl>
+      
+      <% if @owned_art.attributes_list.any? %>
+        <div class="mt-6">
+          <h3 class="font-semibold text-white mb-3">Attributes</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <% @owned_art.attributes_list.each do |attr| %>
+              <div class="bg-gray-700/50 rounded p-3">
+                <dt class="text-xs text-white/70 uppercase tracking-wider">
+                  <%= attr['trait_type'] || attr['name'] || 'Attribute' %>
+                </dt>
+                <dd class="text-sm mt-1 font-medium">
+                  <%= attr['value'] %>
+                </dd>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
 
       <% if @owned_art.external_url.present? %>
         <div class="mt-6">
