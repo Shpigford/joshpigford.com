@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# === Port Configuration ===
+export PORT=${CONDUCTOR_PORT:-3000}
+export VITE_RUBY_PORT=$((PORT + 1000))
+
+# === Redis Isolation ===
+if [ -n "$CONDUCTOR_WORKSPACE_NAME" ]; then
+  HASH=$(printf '%s' "$CONDUCTOR_WORKSPACE_NAME" | cksum | cut -d' ' -f1)
+  REDIS_DB=$((HASH % 16))
+  export REDIS_URL="redis://localhost:6379/${REDIS_DB}"
+fi
+
+exec bin/dev
