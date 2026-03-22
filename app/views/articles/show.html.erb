@@ -6,7 +6,7 @@
   </nav>
   <h1 class="mt-2 mb-0 font-serif text-4xl"><%= @article.title %></h1>
   <span class="text-sm text-gray-500">
-    <%= @article.publish_at.strftime("%B %d, %Y") %>
+    <%= @article.publish_at.strftime("%B %-d, %Y") %>
   </span>
   <% if user_signed_in? %>
   <span class="flex space-x-2">
