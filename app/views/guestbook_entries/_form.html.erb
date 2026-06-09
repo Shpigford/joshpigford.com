@@ -1,0 +1,34 @@
+<%= form_with model: @entry, url: guestbook_entries_path do |form| %>
+  <% if form.object.errors.any? %>
+    <div class="mb-4 text-red-400">
+      <% form.object.errors.full_messages.each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :name, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_field :name, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :homepage, "Homepage (optional)", class: "block text-sm font-bold mb-2" %>
+    <%= form.url_field :homepage, placeholder: "https://", class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :message, class: "block text-sm font-bold mb-2" %>
+    <%= form.text_area :message, rows: 4, class: "appearance-none rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-none focus:ring-0 border-0" %>
+  </div>
+
+  <%# Honeypot: hidden from humans, bots tend to fill it. %>
+  <div class="hidden" aria-hidden="true">
+    <%= form.label :nickname, "Leave this field empty" %>
+    <%= form.text_field :nickname, tabindex: -1, autocomplete: "off" %>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= form.submit "Sign the Guestbook", class: "bg-gold-500 hover:bg-gold-600 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+  </div>
+<% end %>

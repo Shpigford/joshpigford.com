@@ -8,7 +8,15 @@ Rails.application.routes.draw do
   resources :podcasts
   resources :books
   resources :toys
-  
+
+  resources :guestbook_entries, only: [:index, :create, :destroy], path: "guestbook" do
+    member do
+      patch :approve
+      patch :reject
+      post :react
+    end
+  end
+
   resources :art, only: [:index]
   get 'art/owned/:id', to: 'art#owned_show', as: :owned_art
   get 'art/made/:id', to: 'art#made_show', as: :made_art

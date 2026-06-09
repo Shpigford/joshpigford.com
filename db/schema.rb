@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_07_14_101950) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_09_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,21 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_14_101950) do
     t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "guestbook_entries", force: :cascade do |t|
+    t.string "name"
+    t.text "message"
+    t.string "homepage"
+    t.string "status", default: "pending", null: false
+    t.string "moderation_reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "country_code"
+    t.jsonb "reactions", default: {}, null: false
+    t.string "ip_hash"
+    t.index ["ip_hash", "created_at"], name: "index_guestbook_entries_on_ip_hash_and_created_at"
+    t.index ["status", "created_at"], name: "index_guestbook_entries_on_status_and_created_at"
   end
 
   create_table "investments", force: :cascade do |t|

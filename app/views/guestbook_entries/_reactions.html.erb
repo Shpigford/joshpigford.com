@@ -1,0 +1,11 @@
+<div id="reactions-<%= entry.id %>" class="flex flex-wrap items-center gap-1 not-prose">
+  <% entry.reaction_emojis.each do |emoji| %>
+    <button type="button"
+            class="px-1 py-0.5 text-sm rounded hover:bg-neutral-800"
+            data-action="reaction#fire"
+            data-emoji="<%= emoji %>"
+            data-url="<%= react_guestbook_entry_path(entry, emoji: emoji) %>">
+      <%= emoji %> <span data-reaction-count class="text-neutral-500"><%= entry.reactions[emoji] || 0 %></span>
+    </button>
+  <% end %>
+</div>
