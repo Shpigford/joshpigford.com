@@ -6,6 +6,18 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Scan Rails views (e.g. the layout's body classes) for utilities. */
+@source "../../views";
+
+/* The site is dark-only — pin the page shell so it never depends on the
+   dark: variant being generated from an ERB file. */
+@layer base {
+  body {
+    background-color: var(--color-black);
+    color: var(--color-white);
+  }
+}
+
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Gambarino-Regular", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
