@@ -24,6 +24,9 @@ export default function Home() {
             <a href="https://granite.co">Granite</a> - A vault that knows your documents
           </li>
           <li>
+            <a href="https://keptwell.org">KeptWell</a> - Your family's medical binder, replaced
+          </li>
+          <li>
             <a href="https://initialcommit.co">Initial Commit</a> - Fractional AI &amp; product
             co-founder for startups
           </li>
