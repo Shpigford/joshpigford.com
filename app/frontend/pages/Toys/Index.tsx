@@ -1,0 +1,28 @@
+import { Head, Link, usePage } from '@inertiajs/react'
+import type { SharedProps } from '@/types'
+
+export default function ToysIndex() {
+  const { auth } = usePage<SharedProps>().props
+
+  return (
+    <>
+      <Head title="Toys" />
+
+      <div className="flex items-start mb-0">
+        <h1 className="font-serif text-4xl">Toys</h1>
+        {auth.user && (
+          <span className="mt-2 ml-4">
+            <Link href="/toys/new">Add New Toy</Link>
+          </span>
+        )}
+      </div>
+      <p className="mt-0 text-lg">
+        I started collecting designer toys back in 2004. Eventually, my little hobby turned into an{' '}
+        <a href="https://joshpigford.com/projects/fugitive-toys">actual toy store</a> that my wife
+        and I started in 2006, and then sold in 2009. My collection isn't quite what it was back
+        then, but in the past few years I've started actively collecting again. This is a place for
+        me to show off that collection!
+      </p>
+    </>
+  )
+}

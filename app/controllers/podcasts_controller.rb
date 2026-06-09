@@ -3,10 +3,20 @@ class PodcastsController < ApplicationController
 
   def index
     @podcasts = Podcast.all.order(name: :asc)
+    set_meta(title: "Podcasts")
+    render inertia: "Podcasts/Index", props: {
+      podcasts: @podcasts.map do |podcast|
+        {
+          id: podcast.id,
+          name: podcast.name,
+          link: podcast.link
+        }
+      end
+    }
   end
 
   def new
-    @podcast = Podcast.new
+    render inertia: "Podcasts/New"
   end
 
   def create
@@ -15,12 +25,19 @@ class PodcastsController < ApplicationController
     if @podcast.save
       redirect_to podcasts_path
     else
-      render :new, status: :unprocessable_entity
+      redirect_to new_podcast_path, inertia: { errors: @podcast.errors }
     end
   end
 
   def edit
     @podcast = Podcast.find(params[:id])
+    render inertia: "Podcasts/Edit", props: {
+      podcast: {
+        id: @podcast.id,
+        name: @podcast.name,
+        link: @podcast.link
+      }
+    }
   end
 
   def update
@@ -29,7 +46,7 @@ class PodcastsController < ApplicationController
     if @podcast.update(podcast_params)
       redirect_to podcasts_path
     else
-      render :edit, status: :unprocessable_entity
+      redirect_to edit_podcast_path(@podcast), inertia: { errors: @podcast.errors }
     end
   end
 

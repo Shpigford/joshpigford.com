@@ -1,0 +1,117 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Scan Rails views (e.g. the layout's body classes) for utilities. */
+@source "../../views";
+
+/* The site is dark-only — pin the page shell so it never depends on the
+   dark: variant being generated from an ERB file. */
+@layer base {
+  body {
+    background-color: var(--color-black);
+    color: var(--color-white);
+  }
+}
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Gambarino-Regular", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  --color-white: #f0efea;
+  --color-black: #1b1a19;
+
+  --color-gold-50: #ffffe7;
+  --color-gold-100: #ffffc1;
+  --color-gold-200: #fffb86;
+  --color-gold-300: #fff041;
+  --color-gold-400: #ffe00d;
+  --color-gold-500: #ffd100;
+  --color-gold-600: #d19900;
+  --color-gold-700: #a66d02;
+  --color-gold-800: #89550a;
+  --color-gold-900: #74450f;
+  --color-gold-950: #442404;
+}
+
+@font-face {
+  font-family: "Gambarino-Regular";
+  src: url("../assets/fonts/Gambarino-Regular.woff2") format("woff2"),
+    url("../assets/fonts/Gambarino-Regular.woff") format("woff"),
+    url("../assets/fonts/Gambarino-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.prose a,
+.thick-link {
+  text-decoration: none;
+  background-image: linear-gradient(90deg, #ffd100 0%, #ffd100 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 0.1em;
+  background-position: 0 88%;
+  transition: background-size 0.2s ease-in-out;
+}
+
+.prose a:hover {
+  background-size: 100% 0.2em;
+}
+
+.no-thick-link {
+  text-decoration: none !important;
+  background-image: none !important;
+  transition: none !important;
+}
+
+/* Retro Mode: opt-in 1999 cheese for the guestbook. Off by default. */
+
+.retro-only {
+  display: none;
+}
+.retro-mode .retro-only {
+  display: block;
+}
+
+.retro-mode {
+  font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", cursive !important;
+  padding: 1.25rem;
+  border: 4px ridge #ffe00d;
+  border-radius: 0;
+  background-color: #000033;
+  background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+    radial-gradient(1px 1px at 90px 130px, #fff, transparent),
+    radial-gradient(2px 2px at 150px 60px, #ffe00d, transparent),
+    radial-gradient(1px 1px at 250px 180px, #9cf, transparent);
+  background-size: 300px 300px;
+}
+
+.retro-mode h1,
+.retro-mode h2 {
+  color: #ff00ff !important;
+  text-shadow: 2px 2px 0 #00ffff;
+  font-family: "Comic Sans MS", cursive !important;
+}
+
+.retro-mode a {
+  color: #00ff66 !important;
+}
+
+.retro-mode .retro-marquee {
+  color: #ffe00d;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+@keyframes retro-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.retro-mode .retro-blink {
+  animation: retro-blink 1s step-start infinite;
+}

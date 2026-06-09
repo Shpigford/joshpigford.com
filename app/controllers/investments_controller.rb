@@ -3,10 +3,23 @@ class InvestmentsController < ApplicationController
 
   def index
     @investments = Investment.all.order(year: :desc)
+    set_meta(title: "Investments")
+    render inertia: "Investments/Index", props: {
+      investments: @investments.map do |investment|
+        {
+          id: investment.id,
+          company: investment.company,
+          link: investment.link,
+          year: investment.year,
+          amount: helpers.number_to_currency(investment.amount, precision: 0),
+          about: investment.about
+        }
+      end
+    }
   end
 
   def new
-    @investment = Investment.new
+    render inertia: "Investments/New"
   end
 
   def create
@@ -14,12 +27,22 @@ class InvestmentsController < ApplicationController
     if @investment.save
       redirect_to investments_path
     else
-      render :new
+      redirect_to new_investment_path, inertia: { errors: @investment.errors }
     end
   end
 
   def edit
     @investment = Investment.find_by(id: params[:id])
+    render inertia: "Investments/Edit", props: {
+      investment: {
+        id: @investment.id,
+        company: @investment.company,
+        link: @investment.link,
+        year: @investment.year,
+        amount: @investment.amount,
+        about: @investment.about
+      }
+    }
   end
 
   def update
@@ -27,7 +50,7 @@ class InvestmentsController < ApplicationController
     if @investment.update(investment_params)
       redirect_to investments_path
     else
-      render :edit
+      redirect_to edit_investment_path(@investment), inertia: { errors: @investment.errors }
     end
   end
 

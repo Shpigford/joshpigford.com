@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html class="dark">
   <head>
-    <title><%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %></title>
+    <title><%= @meta_title ? "#{@meta_title} - Josh Pigford" : "Josh Pigford" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <meta name="title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
-    <meta name="description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
+    <meta name="title" content="<%= @meta_title ? "#{@meta_title} - Josh Pigford" : "Josh Pigford" %>">
+    <meta name="description" content="<%= @meta_description || "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
-    <meta property="og:description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
-    <meta property="og:image" content="<%= image_url(content_for?(:meta_image) ? yield(:meta_image) : "meta.png") %>">
-    <%= yield :meta %>
+    <meta property="og:title" content="<%= @meta_title ? "#{@meta_title} - Josh Pigford" : "Josh Pigford" %>">
+    <meta property="og:description" content="<%= @meta_description || "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
+    <meta property="og:image" content="<%= @meta_image || "#{request.base_url}/meta.png" %>">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="<%= content_for?(:title) ? ("#{yield(:title)} - Josh Pigford").html_safe : "Josh Pigford" %>">
-    <meta property="twitter:description" content="<%= content_for?(:description) ? (yield(:description)) : "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
-    <meta property="twitter:image" content="<%= image_url(content_for?(:meta_image) ? yield(:meta_image) : "meta.png") %>">
+    <meta property="twitter:title" content="<%= @meta_title ? "#{@meta_title} - Josh Pigford" : "Josh Pigford" %>">
+    <meta property="twitter:description" content="<%= @meta_description || "Josh Pigford: Dabbler. Co-founder and CEO of Maybe." %>">
+    <meta property="twitter:image" content="<%= @meta_image || "#{request.base_url}/meta.png" %>">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -30,39 +29,13 @@
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-
-    <%= hotwire_livereload_tags if Rails.env.development? %>
+    <%= vite_react_refresh_tag %>
+    <%= vite_client_tag %>
+    <%= vite_typescript_tag "inertia.tsx" %>
   </head>
 
   <body class="dark:bg-black dark:text-white">
-    <% if user_signed_in? %>
-      <div class="absolute top-0 right-0 px-4 py-2 text-black bg-gold-400">
-        <%= button_to "Sign out", session_path, method: :delete %>
-      </div>
-    <% end %>
-    <div class="items-start gap-4 p-8 md:flex md:py-20">
-      <a href="/" class="text-6xl font-semibold text-right text-gold-500 hover:text-gold-400 w-14">&#10626;&#10650;</a>
-      <div>
-        <header class="mb-10 font-serif prose dark:prose-invert max-w-none">
-          <h1 class="mb-3 text-6xl font-light tracking-tight">Josh Pigford</h1>
-
-          <p class="text-xl">
-            <%= link_to "Home", root_path %> / <%= link_to "Articles", articles_path %> / <%= link_to "Projects", projects_path %> / <%= link_to "Investments", investments_path %> / <%= link_to "Podcasts", podcasts_path %> / <%= link_to "Books", books_path %> / <%= link_to "Art", art_index_path %> / <%= link_to "Guestbook", guestbook_entries_path %>
-          </p>
-        </header>
-        <div class="font-serif prose dark:prose-invert <%= 'max-w-full w-full' if @full_width == true %>">
-          <%= yield %>
-        </div>
-        <footer class="my-12 font-serif text-sm prose text-gray-400 dark:prose-invert">
-          <p>
-            This thing is <a href="https://github.com/Shpigford/joshpigford.com">open source</a>, for better or worse.
-          </p>
-        </footer>
-      </div>
-    </div>
+    <%= yield %>
   </body>
 </html>
