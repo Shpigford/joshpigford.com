@@ -2,18 +2,19 @@ class RegistrationsController < ApplicationController
   def new
     # If a user is already signed in, or if there are any users in the database, we redirect to the root path to prevent a user from registering a new account after the first user has already registered.
     redirect_to root_path and return if user_signed_in? || User.any?
-    @user = User.new
+
+    render inertia: "Registrations/New"
   end
 
   def create
     return redirect_to root_path if User.any?
 
-    @user = User.new(registration_params)
-    if @user.save
-      login @user
+    user = User.new(registration_params)
+    if user.save
+      login user
       redirect_to root_path
     else
-      render :new, status: :unprocessable_entity
+      redirect_to new_registration_path, inertia: { errors: user.errors.to_hash(true) }
     end
   end
 

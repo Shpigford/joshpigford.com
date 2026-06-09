@@ -2,16 +2,32 @@ class ToysController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @toys = Toy.all.order(Arel.sql('RANDOM()'))
+    set_meta(title: "Toys")
+    render inertia: "Toys/Index"
   end
 
   def new
-    @toy = Toy.new
+    render inertia: "Toys/New"
   end
 
   def show
     @toy = Toy.find_by(id: params[:id])
-    @full_width = true
+    set_meta(title: @toy.name)
+    render inertia: "Toys/Show", props: {
+      toy: {
+        param: @toy.to_param,
+        name: @toy.name,
+        artist: @toy.artist,
+        manufacturer: @toy.manufacturer,
+        platform: @toy.platform,
+        series: @toy.series,
+        size: @toy.size,
+        color: @toy.color,
+        releaseYear: @toy.release_date.strftime("%Y"),
+        originalPrice: @toy.original_price,
+        images: @toy.images.map { |image| url_for(image.variant(resize_to_fill: [800, 800])) }
+      }
+    }
   end
 
   def create
@@ -19,7 +35,7 @@ class ToysController < ApplicationController
     if @toy.save
       redirect_to @toy
     else
-      render :new
+      redirect_to new_toy_path, inertia: { errors: @toy.errors.to_hash(true) }
     end
   end
 

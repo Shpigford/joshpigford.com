@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   def new
+    render inertia: "Sessions/New"
   end
 
   def create
@@ -7,8 +8,7 @@ class SessionsController < ApplicationController
       login user
       redirect_to root_path
     else
-      flash.now[:alert] = "Invalid email or password."
-      render :new, status: :unprocessable_entity
+      redirect_to new_session_path, alert: "Invalid email or password."
     end
   end
 

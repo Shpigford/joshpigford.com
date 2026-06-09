@@ -1,4 +1,11 @@
 class ApplicationController < ActionController::Base
+  inertia_share do
+    {
+      auth: {
+        user: current_user && { id: current_user.id, email: current_user.email }
+      }
+    }
+  end
 
   private
 
@@ -13,7 +20,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user_from_session
     User.find_by(id: session[:user_id])
-  end  
+  end
 
   def user_signed_in?
     current_user.present?
@@ -29,5 +36,12 @@ class ApplicationController < ActionController::Base
   def logout
     Current.user = nil
     reset_session
+  end
+
+  # Server-rendered meta tags for the initial page load (see layouts/application.html.erb).
+  def set_meta(title: nil, description: nil, image: nil)
+    @meta_title = title
+    @meta_description = description
+    @meta_image = image
   end
 end

@@ -3,14 +3,28 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = Article.all.order(publish_at: :desc)
+    set_meta(title: "Articles")
+    render inertia: "Articles/Index", props: {
+      articles: @articles.map { |article| { title: article.title, slug: article.slug } }
+    }
   end
 
   def show
     @article = Article.find_by(slug: params[:id])
+    set_meta(title: @article.title)
+    render inertia: "Articles/Show", props: {
+      article: {
+        title: @article.title,
+        slug: @article.slug,
+        publishAt: @article.publish_at.strftime("%B %-d, %Y"),
+        publishAtIso: @article.publish_at.strftime("%Y-%m-%d"),
+        bodyHtml: helpers.markdown(@article.body)
+      }
+    }
   end
 
   def new
-    @article = Article.new
+    render inertia: "Articles/New"
   end
 
   def create
@@ -19,12 +33,20 @@ class ArticlesController < ApplicationController
     if @article.save
       redirect_to @article
     else
-      render :new
+      redirect_to new_article_path, inertia: { errors: @article.errors }
     end
   end
 
   def edit
     @article = Article.find_by(slug: params[:id])
+    render inertia: "Articles/Edit", props: {
+      article: {
+        title: @article.title,
+        slug: @article.slug,
+        body: @article.body,
+        publishAt: @article.publish_at&.strftime("%Y-%m-%dT%H:%M")
+      }
+    }
   end
 
   def update
@@ -33,7 +55,7 @@ class ArticlesController < ApplicationController
     if @article.update(article_params)
       redirect_to @article
     else
-      render :edit
+      redirect_to edit_article_path(params[:id]), inertia: { errors: @article.errors }
     end
   end
 

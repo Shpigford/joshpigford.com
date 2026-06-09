@@ -3,15 +3,38 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = Project.all.order(year: :asc)
-    @full_width = true
+    set_meta(title: "Projects")
+    render inertia: "Projects/Index", props: {
+      projects: @projects.map do |project|
+        {
+          name: project.name,
+          slug: project.slug,
+          year: project.year,
+          description: project.description,
+          outcome: project.outcome
+        }
+      end
+    }
   end
 
   def new
-    @project = Project.new
+    render inertia: "Projects/New"
   end
 
   def show
     @project = Project.find_by(slug: params[:id])
+    set_meta(title: @project.name)
+    render inertia: "Projects/Show", props: {
+      project: {
+        name: @project.name,
+        slug: @project.slug,
+        year: @project.year,
+        description: @project.description,
+        outcome: @project.outcome,
+        notes: @project.notes,
+        link: @project.link
+      }
+    }
   end
 
   def create
@@ -20,13 +43,23 @@ class ProjectsController < ApplicationController
       flash[:notice] = "Project created successfully."
       redirect_to projects_path
     else
-      flash.now[:alert] = "Project could not be created."
-      render :new, status: :unprocessable_entity
+      redirect_to new_project_path, inertia: { errors: @project.errors }
     end
   end
 
   def edit
     @project = Project.find_by(slug: params[:id])
+    render inertia: "Projects/Edit", props: {
+      project: {
+        name: @project.name,
+        slug: @project.slug,
+        link: @project.link,
+        year: @project.year,
+        description: @project.description,
+        outcome: @project.outcome,
+        notes: @project.notes
+      }
+    }
   end
 
   def update
@@ -35,20 +68,15 @@ class ProjectsController < ApplicationController
       flash[:notice] = "Project updated successfully."
       redirect_to projects_path
     else
-      flash.now[:alert] = "Project could not be updated."
-      render :edit, status: :unprocessable_entity
+      redirect_to edit_project_path(params[:id]), inertia: { errors: @project.errors }
     end
   end
 
   def destroy
     @project = Project.find_by(slug: params[:id])
-    if @project.destroy
-      flash[:notice] = "Project deleted successfully."
-      redirect_to projects_path
-    else
-      flash.now[:alert] = "Project could not be deleted."
-      render :edit, status: :unprocessable_entity
-    end
+    @project.destroy
+    flash[:notice] = "Project deleted successfully."
+    redirect_to projects_path
   end
 
   private

@@ -15,25 +15,28 @@ class GuestbookEntriesControllerTest < ActionDispatch::IntegrationTest
   test "index renders" do
     get guestbook_entries_url
     assert_response :success
-    assert_select "h1", "Guestbook"
+    assert_inertia_component "Guestbook/Index"
   end
 
-  test "visitor homepage links are nofollow ugc and leak no referrer" do
+  test "index exposes approved entries with homepage and reactions" do
     get guestbook_entries_url
-    rel = css_select("a[href='https://example.com']").first["rel"].to_s.split
-    %w[nofollow ugc noopener noreferrer].each { |token| assert_includes rel, token }
+    assert_inertia_props do |props|
+      entry = props["entries"].find { |e| e["name"] == "Ada" }
+      entry["homepage"] == "https://example.com" && entry.key?("reactions")
+    end
   end
 
-  test "signed-in admin sees a delete control on approved entries" do
+  test "signed-in admin sees the pending queue" do
     login_admin
     get guestbook_entries_url
-    assert_select "form[action=?][method=post] input[name=_method][value=delete]",
-                  guestbook_entry_path(guestbook_entries(:approved_one))
+    assert_inertia_props do |props|
+      props["pending"].any? { |e| e["name"] == "Grace" }
+    end
   end
 
-  test "anonymous visitor sees no delete control" do
+  test "anonymous visitor gets no pending queue" do
     get guestbook_entries_url
-    assert_select "input[name=_method][value=delete]", false
+    assert_no_inertia_prop :pending
   end
 
   test "create with approved verdict saves an approved entry" do
@@ -62,11 +65,16 @@ class GuestbookEntriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to guestbook_entries_path
   end
 
-  test "invalid submission is rejected without saving" do
+  test "invalid submission redirects back with errors and saves nothing" do
     assert_no_difference "GuestbookEntry.count" do
       post guestbook_entries_url, params: { guestbook_entry: { name: "", message: "" } }
     end
-    assert_response :unprocessable_entity
+    assert_redirected_to guestbook_entries_path
+
+    follow_redirect!
+    assert_inertia_props do |props|
+      props["errors"]["name"].include?("Name can't be blank")
+    end
   end
 
   test "anonymous cannot destroy" do
@@ -102,7 +110,8 @@ class GuestbookEntriesControllerTest < ActionDispatch::IntegrationTest
         post guestbook_entries_url, params: { guestbook_entry: { name: "B", message: "again" } },
              headers: { "CF-Connecting-IP" => "9.9.9.9" }
       end
-      assert_response :too_many_requests
+      assert_redirected_to guestbook_entries_path
+      assert_equal "Hang on — you can only sign once a minute. Try again shortly.", flash[:alert]
     end
   end
 

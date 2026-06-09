@@ -2,10 +2,19 @@ class GuestbookEntriesController < ApplicationController
   before_action :authenticate_user!, only: [:destroy, :approve, :reject]
 
   def index
-    @entries = GuestbookEntry.visible
-    @signature_count = @entries.size
-    @entry = GuestbookEntry.new
-    @pending = GuestbookEntry.where.not(status: "approved").order(created_at: :desc) if user_signed_in?
+    entries = GuestbookEntry.visible
+    set_meta(title: "Guestbook")
+
+    props = {
+      entries: entries.map { |entry| entry_props(entry) },
+      signatureCount: entries.size
+    }
+    if user_signed_in?
+      props[:pending] = GuestbookEntry.where.not(status: "approved").order(created_at: :desc)
+                                      .map { |entry| pending_props(entry) }
+    end
+
+    render inertia: "Guestbook/Index", props: props
   end
 
   def create
@@ -13,14 +22,15 @@ class GuestbookEntriesController < ApplicationController
     ip_hash = GuestbookEntry.digest_ip(client_ip)
 
     if GuestbookEntry.posted_recently?(ip_hash)
-      flash.now[:alert] = "Hang on — you can only sign once a minute. Try again shortly."
-      return render_index_with_form(status: :too_many_requests)
+      return redirect_to guestbook_entries_path, alert: "Hang on — you can only sign once a minute. Try again shortly."
     end
 
     # Honeypot tripped: pretend success, save nothing.
     return redirect_to(guestbook_entries_path, notice: thank_you_message) if @entry.nickname.present?
 
-    return render_index_with_form(status: :unprocessable_entity) unless @entry.valid?
+    unless @entry.valid?
+      return redirect_to guestbook_entries_path, inertia: { errors: @entry.errors.to_hash(true) }
+    end
 
     result = GuestbookModerator.call(@entry)
     @entry.status = result.status
@@ -56,12 +66,27 @@ class GuestbookEntriesController < ApplicationController
 
   private
 
-  # Re-render the index (with the submitted entry preserved in the form).
-  def render_index_with_form(status:)
-    @entries = GuestbookEntry.visible
-    @signature_count = @entries.size
-    @pending = GuestbookEntry.where.not(status: "approved").order(created_at: :desc) if user_signed_in?
-    render :index, status: status
+  def entry_props(entry)
+    {
+      id: entry.id,
+      name: entry.name,
+      message: entry.message,
+      homepage: entry.homepage,
+      createdAt: entry.created_at.strftime("%B %-d, %Y"),
+      countryCode: entry.country_code,
+      reactions: entry.reactions,
+      reactionEmojis: entry.reaction_emojis
+    }
+  end
+
+  def pending_props(entry)
+    {
+      id: entry.id,
+      name: entry.name,
+      message: entry.message,
+      status: entry.status,
+      moderationReason: entry.moderation_reason
+    }
   end
 
   # Cloudflare passes the real client IP; fall back to the connecting address.
