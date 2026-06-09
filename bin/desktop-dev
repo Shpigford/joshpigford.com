@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Per-worktree dev launcher for Claude Code Desktop.
+#
+# Each git worktree gets its own DETERMINISTIC port + isolated Redis DB index
+# so multiple Desktop sessions run in parallel without colliding. Pointed to by
+# .claude/launch.json's "runtimeExecutable"; execs the normal bin/dev (foreman).
+set -e
+
+cd "$(dirname "$0")/.."
+WORKTREE_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$WORKTREE_ROOT"
+
+# Force UTF-8 — Desktop's launcher inherits a minimal env with no LANG.
+export LANG="${LANG:-en_US.UTF-8}"
+export LC_ALL="${LC_ALL:-en_US.UTF-8}"
+
+# Deterministic per-worktree slots. cksum(worktree_root:app:service) is stable
+# for a worktree and differs across worktrees. Salt per service so each slot is
+# independent.
+hash_of() { printf '%s' "$1" | cksum | cut -d' ' -f1; }
+APP_ID="web"
+
+# Rails server port — honor a PORT injected by Desktop (autoPort), else derive.
+export PORT="${PORT:-$(( 30000 + $(hash_of "$WORKTREE_ROOT:$APP_ID") % 10000 ))}"
+
+# Action Cable Redis DB index (0..15) — cable.yml reads REDIS_URL.
+export REDIS_URL="redis://localhost:6379/$(( $(hash_of "$WORKTREE_ROOT:$APP_ID:redis") % 16 ))"
+
+# Per-worktree overrides win at runtime if present.
+if [ -f .env.local ]; then set -a; . ./.env.local; set +a; fi
+
+exec ./bin/dev
