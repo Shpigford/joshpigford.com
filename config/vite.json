@@ -1,7 +1,9 @@
 {
   "all": {
     "sourceCodeDir": "app/frontend",
-    "watchAdditionalPaths": []
+    "watchAdditionalPaths": [],
+    "ssrBuildEnabled": true,
+    "ssrEntrypoint": "~/entrypoints/inertia.tsx"
   },
   "development": {
     "autoBuild": true,

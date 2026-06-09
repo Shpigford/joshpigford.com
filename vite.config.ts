@@ -11,5 +11,19 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'app/frontend'),
     },
   },
-  plugins: [inertia(), react(), tailwindcss(), RubyPlugin()],
+  plugins: [
+    inertia({
+      ssr: {
+        // Path is relative to the Vite root, which vite-plugin-ruby
+        // sets to app/frontend (via sourceCodeDir in config/vite.json).
+        entry: 'entrypoints/inertia.tsx',
+        // Rails only ever connects via localhost; don't expose the worker's
+        // unauthenticated /render and /shutdown endpoints on all interfaces.
+        host: '127.0.0.1',
+      },
+    }),
+    react(),
+    tailwindcss(),
+    RubyPlugin(),
+  ],
 })

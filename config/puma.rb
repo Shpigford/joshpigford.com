@@ -37,6 +37,16 @@ plugin :tmp_restart
 # Run the Solid Queue supervisor inside of Puma for single-server deployments.
 plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 
+# Supervises the Node.js Inertia SSR worker as a child of Puma. Production-only:
+# in development the renderer uses the Vite dev server's /__inertia_ssr endpoint
+# (provided by @inertiajs/vite) instead of a built bundle.
+if ENV.fetch("RAILS_ENV", "development") == "production"
+  # The worker inherits Puma's env; without NODE_ENV=production react-dom
+  # loads its development build for every SSR render.
+  ENV["NODE_ENV"] ||= "production"
+  plugin :inertia_ssr
+end
+
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
