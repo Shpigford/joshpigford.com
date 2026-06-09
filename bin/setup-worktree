@@ -34,6 +34,21 @@ cat > "$WORKTREE_ROOT/.claude/launch.json" <<JSON
 }
 JSON
 
+# === Always: symlink .env from the main checkout ===========================
+# .env is gitignored, so a fresh worktree doesn't get it. Link back to the main
+# checkout (single source of truth — edits there propagate to every worktree).
+# Only do this in an actual worktree, never the main checkout, or we'd create a
+# self-referential .env -> ./.env loop. git-dir differs from git-common-dir only
+# inside a worktree.
+GIT_DIR_REL="$(git rev-parse --git-dir 2>/dev/null || true)"
+GIT_COMMON_REL="$(git rev-parse --git-common-dir 2>/dev/null || true)"
+if [ -n "$GIT_COMMON_REL" ] && [ "$GIT_DIR_REL" != "$GIT_COMMON_REL" ]; then
+  MAIN="$(cd "$(dirname "$GIT_COMMON_REL")" && pwd -P)"
+  if [ -f "$MAIN/.env" ] && [ "$MAIN" != "$(pwd -P)" ]; then
+    ln -sf "$MAIN/.env" .env
+  fi
+fi
+
 # === Fast-path: already set up ==============================================
 if [ -e .worktree-ready ]; then
   echo "[setup-worktree] already configured — skipping first-run setup"
