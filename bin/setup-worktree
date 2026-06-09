@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# One-time per-worktree setup for Claude Code Desktop.
+#
+# Wired to the SessionStart hook in .claude/settings.json. Two parts:
+#   1. ALWAYS: regenerate .claude/launch.json so the preview port matches THIS
+#      worktree (a moved/new worktree hashes to a different port).
+#   2. FIRST RUN: bundle install + prepare the database, guarded by a marker so
+#      re-runs are a fast no-op.
+set -e
+
+cd "$(dirname "$0")/.."
+WORKTREE_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$WORKTREE_ROOT"
+
+hash_of() { printf '%s' "$1" | cksum | cut -d' ' -f1; }
+
+# === Always: regenerate launch.json with this worktree's port ===============
+# APP_ID must match bin/desktop-dev exactly, or the preview opens the wrong port.
+mkdir -p "$WORKTREE_ROOT/.claude"
+APP_ID="web"
+APP_PORT=$(( 30000 + $(hash_of "$WORKTREE_ROOT:$APP_ID") % 10000 ))
+cat > "$WORKTREE_ROOT/.claude/launch.json" <<JSON
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "joshpigford.com",
+      "runtimeExecutable": "./bin/desktop-dev",
+      "runtimeArgs": [],
+      "autoPort": true,
+      "port": ${APP_PORT}
+    }
+  ]
+}
+JSON
+
+# === Fast-path: already set up ==============================================
+if [ -e .worktree-ready ]; then
+  echo "[setup-worktree] already configured — skipping first-run setup"
+  exit 0
+fi
+
+# === First-run setup ========================================================
+echo "[setup-worktree] first-run: installing gems + preparing database"
+bundle install
+bin/rails db:prepare
+
+touch .worktree-ready

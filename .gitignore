@@ -38,3 +38,8 @@
 !/app/assets/builds/.keep
 
 *.DS_Store
+
+# Claude Code Desktop — per-worktree artifacts (regenerated per worktree).
+/.claude/launch.json
+/.claude/worktrees/
+/.worktree-ready
