@@ -10,11 +10,16 @@ InertiaRails.configure do |config|
   config.ssr_enabled = ViteRuby.config.ssr_build_enabled && !Rails.env.test?
   config.ssr_bundle = Rails.public_path.join("vite-ssr/ssr.js").to_s
 
-  # Conductor may inject INERTIA_SSR_URL pointing at a dead process, and the
-  # gem auto-reads INERTIA_* env vars into config. nil lets the renderer fall
-  # through to Vite dev's /__inertia_ssr endpoint in development and the
-  # Puma-plugin-spawned worker (default port 13714) in production.
-  config.ssr_url = nil
+  # In production, derive the worker URL from the same INERTIA_SSR_PORT that
+  # vite.config.ts bakes into the SSR bundle, so Rails and the worker can't
+  # drift. The port must be unique per Inertia+SSR app on a shared host.
+  # Everywhere else this clobbers to nil: Conductor may inject INERTIA_SSR_URL
+  # pointing at a dead process (the gem auto-reads INERTIA_* env vars), and
+  # nil lets the renderer fall through to Vite dev's /__inertia_ssr endpoint.
+  config.ssr_url =
+    if Rails.env.production? && ENV["INERTIA_SSR_PORT"]
+      "http://127.0.0.1:#{ENV['INERTIA_SSR_PORT']}"
+    end
 
   # Pin the layout to an explicit name so the SSR-body render path
   # (render html: ssr['body'], layout:) always resolves application.html.erb.
