@@ -1,0 +1,14 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+approved_one:
+  name: Ada
+  homepage: https://example.com
+  message: Love the site!
+  status: approved
+  created_at: <%= 2.days.ago %>
+
+pending_one:
+  name: Grace
+  message: Just stopping by to say hi.
+  status: pending
+  created_at: <%= 1.day.ago %>
