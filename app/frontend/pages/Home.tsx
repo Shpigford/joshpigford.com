@@ -21,6 +21,9 @@ export default function Home() {
         <p className="text-3xl">Dabbler. Currently building...an offensive number of things.</p>
         <ul className="text-xl mt-4">
           <li>
+            <a href="https://granite.co">Granite</a> - A vault that knows your documents
+          </li>
+          <li>
             <a href="https://initialcommit.co">Initial Commit</a> - Fractional AI &amp; product
             co-founder for startups
           </li>
