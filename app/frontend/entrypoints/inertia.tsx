@@ -1,6 +1,6 @@
 import './application.css'
 import { createInertiaApp } from '@inertiajs/react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import type { ComponentType, ReactNode } from 'react'
 import Layout from '@/layouts/Layout'
 
@@ -22,7 +22,15 @@ void createInertiaApp({
   },
 
   setup({ el, App, props }) {
-    if (!el) return
-    createRoot(el).render(<App {...props} />)
+    const app = <App {...props} />
+    // Server-side: el is null. Return the element so the plugin can render it
+    // to a string. Client-side: hydrate if SSR HTML is present, otherwise mount.
+    if (!el) return app
+    if (el.hasChildNodes()) {
+      hydrateRoot(el, app)
+    } else {
+      createRoot(el).render(app)
+    }
+    return app
   },
 })
