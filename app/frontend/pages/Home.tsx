@@ -27,8 +27,10 @@ export default function Home() {
             <a href="https://keptwell.org">KeptWell</a> - Your family's medical binder, replaced
           </li>
           <li>
-            <a href="https://initialcommit.co">Initial Commit</a> - Fractional AI &amp; product
-            co-founder for startups
+            <a href="https://initialcommit.co">Initial Commit</a> - AI-native builder community
+          </li>
+          <li>
+            <a href="https://knockoff.co">Knockoff</a> - Shopping filter for legitimate products
           </li>
           <li>
             <a href="https://superfantastictoys.com">Super Fantastic</a> - Toy store &amp; novelty
@@ -37,20 +39,6 @@ export default function Home() {
           <li>
             <a href="https://replysocial.co">ReplySocial</a> - Inbox for monitoring &amp; replying
             to X mentions
-          </li>
-          <li>
-            <a href="https://chops.md">Chops</a> - Browse, edit, and manage AI agent skills from
-            your Mac
-          </li>
-          <li>
-            <a href="https://clearly.md">Clearly</a> - Clean native markdown editor for Mac
-          </li>
-          <li>
-            <a href="https://timeslice.today">Timeslice</a> - Visual time-blocking calendar
-          </li>
-          <li>
-            <a href="https://studio.neato.fun">Studio</a> - Browser-based generative design and art
-            creation tools
           </li>
         </ul>
         <p className="text-2xl">
