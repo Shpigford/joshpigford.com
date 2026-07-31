@@ -36,10 +36,6 @@ export default function Home() {
             <a href="https://superfantastictoys.com">Super Fantastic</a> - Toy store &amp; novelty
             collectibles
           </li>
-          <li>
-            <a href="https://replysocial.co">ReplySocial</a> - Inbox for monitoring &amp; replying
-            to X mentions
-          </li>
         </ul>
         <p className="text-2xl">
           You can find me on social media as <a href="https://x.com/Shpigford">@Shpigford</a>.
