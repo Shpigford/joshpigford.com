@@ -21,20 +21,20 @@ export default function Home() {
         <p className="text-3xl">Dabbler. Currently building...an offensive number of things.</p>
         <ul className="text-xl mt-4">
           <li>
+            <a href="https://knockoff.co">Knockoff</a> - Shopping filter for legitimate products
+          </li>
+          <li>
             <a href="https://granite.co">Granite</a> - A vault that knows your documents
           </li>
           <li>
             <a href="https://keptwell.org">KeptWell</a> - Your family's medical binder, replaced
           </li>
           <li>
-            <a href="https://initialcommit.co">Initial Commit</a> - AI-native builder community
-          </li>
-          <li>
-            <a href="https://knockoff.co">Knockoff</a> - Shopping filter for legitimate products
-          </li>
-          <li>
             <a href="https://superfantastictoys.com">Super Fantastic</a> - Toy store &amp; novelty
             collectibles
+          </li>
+          <li>
+            <a href="https://initialcommit.co">Initial Commit</a> - AI-native builder community
           </li>
         </ul>
         <p className="text-2xl">
