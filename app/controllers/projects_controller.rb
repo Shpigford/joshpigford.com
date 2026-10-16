@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @projects = Project.all.order(year: :asc)
+    @projects = Project.order(year: :asc, created_at: :asc)
     set_meta(title: "Projects")
     render inertia: "Projects/Index", props: {
       projects: @projects.map do |project|
