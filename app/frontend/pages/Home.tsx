@@ -21,7 +21,7 @@ export default function Home() {
         <p className="text-3xl">Dabbler. Currently building...an offensive number of things.</p>
         <ul className="text-xl mt-4">
           <li>
-            <a href="https://firstindex.co">FirstIndex</a> - Get named when buyers ask AI
+            <a href="https://firstindex.com">FirstIndex</a> - Get named when buyers ask AI
           </li>
           <li>
             <a href="https://knockoff.co">Knockoff</a> - Brand protection for eCommerce
